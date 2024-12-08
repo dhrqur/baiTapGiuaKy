@@ -8,4 +8,4 @@ Xây dựng web sử dụng PHP và MySQL QUẢN LÍ SINH VIÊN với các thao 
 - Update (chỉnh sửa sinh viên)
 - Delete (xóa sinh viên)
 - Search (tìm kiếm sinh viên theo tên hoặc quê quán)
-# baiTapGiuaKy
+
