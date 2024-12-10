@@ -2,15 +2,14 @@
 require_once 'connect.php'; // Kết nối cơ sở dữ liệu
 
 // Kiểm tra nếu có từ khóa tìm kiếm
-$search_sql = "SELECT * FROM table_Students ORDER BY id DESC"; // Mặc định hiển thị tất cả sinh viên
-
 if (isset($_GET['search']) && !empty($_GET['search'])) {
-    $search = mysqli_real_escape_string($conn, trim($_GET['search']));
-    $search_sql = "SELECT * FROM table_Students WHERE fullname LIKE '%$search%' OR hometown LIKE '%$search%' ORDER BY id DESC";
+    $search = trim($_GET['search']); //trim dùng để loại bỏ tất cả các khoảng trắng trong chuỗi
+    $search_sql = "SELECT * FROM table_Students WHERE fullname LIKE '%$search%' OR hometown LIKE '%$search%' ORDER BY id DESC"; //DESC là sắp xếp id giảm dần
 }
 
 $result = mysqli_query($conn, $search_sql);
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
