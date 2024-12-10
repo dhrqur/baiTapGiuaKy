@@ -1,33 +1,23 @@
 <?php
 require_once 'connect.php'; // Kết nối cơ sở dữ liệu
 
-// Kiểm tra nếu có tham số id truyền vào
-if (isset($_GET['id'])) {
-    $id = $_GET['id'];
+// Lấy id từ URL
+$id = isset($_GET['id']) ? $_GET['id'] : 0;
 
-    // Xóa sinh viên
-    $delete_sql = "DELETE FROM table_Students WHERE id = ?";
-    $stmt = mysqli_prepare($conn, $delete_sql);
-
-    if ($stmt) {
-        // Liên kết tham số với câu lệnh SQL
-        mysqli_stmt_bind_param($stmt, 'i', $id);
-
-        if (mysqli_stmt_execute($stmt)) {
-            // Sau khi xóa thành công, chuyển hướng về trang danh sách sinh viên
-            header('Location: index.php');
-            exit;
-        } else {
-            echo "Lỗi khi xóa sinh viên.";
-        }
-
-        // Đóng statement
-        mysqli_stmt_close($stmt);
+if ($id != 0) {
+    // Xóa sinh viên theo id
+    $delete_sql = "DELETE FROM table_Students WHERE id = $id";
+    if (mysqli_query($conn, $delete_sql)) {
+        echo "<script>
+        alert('Xóa sinh viên thành công!');
+        window.location.href = 'index.php';
+        </script>";
     } else {
-        echo "Lỗi khi chuẩn bị câu lệnh SQL.";
+        echo "Lỗi khi xóa sinh viên.";
     }
 } else {
-    echo "Không có id sinh viên.";
+    echo "ID không hợp lệ";
+    exit;
 }
 
 // Đóng kết nối cơ sở dữ liệu
