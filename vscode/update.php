@@ -1,50 +1,31 @@
 <?php
 require_once 'connect.php'; // Kết nối cơ sở dữ liệu
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Xử lý cập nhật dữ liệu
-    $id = $_POST['id'] ?? 0;
-    $fullname = $_POST['fullname'] ?? '';
-    $dob = $_POST['dob'] ?? '';
-    $gender = $_POST['gender'] ?? 0;
-    $hometown = $_POST['hometown'] ?? '';
-    $level = $_POST['level'] ?? 0;
-    $group_id = $_POST['group_id'] ?? 0;
+$id = $_GET['id'];
 
-    if ($id > 0 && $fullname && $dob && $hometown && $group_id > 0) {
-        // Câu lệnh SQL để cập nhật thông tin
-        $update_sql = "UPDATE table_Students SET fullname = '$fullname', dob = '$dob', gender = $gender, hometown = '$hometown', level = $level, group_id = $group_id WHERE id = $id";
+    $sql = "SELECT * FROM table_Students WHERE id = $id";
+    $query = mysqli_query($conn, $sql);
+
+    $row = mysqli_fetch_assoc( $query);
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        // Lấy dữ liệu từ form
+        $fullname = $_POST['fullname'];
+        $dob = $_POST['dob'];
+        $gender = $_POST['gender'];
+        $hometown = $_POST['hometown'];
+        $level = $_POST['level'];
+        $group_id = $_POST['group_id'];
+
+        $update_sql = "UPDATE table_Students SET fullname = '$fullname', dob = '$dob', gender = $gender, hometown = '$hometown', level = $level, `group_id` = $group_id WHERE id = $id";
 
         if (mysqli_query($conn, $update_sql)) {
-            echo "<script>alert('Cập nhật thành công!'); window.location.href = 'index.php';</script>";
+            echo "<script>alert('Cập nhật thành công!'); 
+            window.location.href = 'index.php';</script>";
         } else {
             echo "Lỗi cập nhật: " . mysqli_error($conn);
         }
-    } else {
-        echo "Dữ liệu không hợp lệ.";
-    }
-} else {
-    // Hiển thị form cập nhật
-    $id = $_GET['id'] ?? 0;
-    if ($id <= 0) {
-        echo "ID không hợp lệ.";
-        exit;
-    }
+    }  
 
-    // Lấy thông tin sinh viên theo ID
-    $select_sql = "SELECT * FROM table_Students WHERE id = $id";
-    $result = mysqli_query($conn, $select_sql);
-    
-    if (!$result || mysqli_num_rows($result) == 0) {
-        echo "Không tìm thấy sinh viên với ID: $id";
-        exit;
-    }
-
-    $row = mysqli_fetch_assoc($result);
-}
-
-mysqli_free_result($result);
-mysqli_close($conn);
 ?>
 
 <!DOCTYPE html>
