@@ -4,9 +4,9 @@ require_once 'connect.php'; // Kết nối cơ sở dữ liệu
 $id = $_GET['id'];
 
     $sql = "SELECT * FROM table_Students WHERE id = $id";
-    $query = mysqli_query($conn, $sql);
+    $result = mysqli_query($conn, $sql);
 
-    $row = mysqli_fetch_assoc( $query);
+    $row = mysqli_fetch_assoc($result);
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Lấy dữ liệu từ form
         $fullname = $_POST['fullname'];
